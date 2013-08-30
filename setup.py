@@ -21,6 +21,7 @@ specs = {
     'long_description' : description,
     'url' : 'http://github.com/cybertoast/pyner',
     'author' : 'Sundar Raman',
+    'author_email': 'cybertoast@gmail.com',
     'keywords' : ['ner', 'stanford named entity recognizer', 'stanford named entity tagger'],
     'license' : 'BSD',
     'packages' : ['ner'],
