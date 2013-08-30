@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-import httplib
+import requests
 import json
 import re
+from contextlib import closing
 import socket
 import urllib
 
@@ -14,7 +15,7 @@ from .exceptions import (
 )
 
 from .utils import (
-    tcpip4_socket,
+    # tcpip4_socket,
     http_connection,
 )
 
@@ -114,7 +115,8 @@ class SocketNER(NER):
         for s in ('\f', '\n', '\r', '\t', '\v'): #strip whitespaces
             text = text.replace(s, '')
         text += '\n' #ensure end-of-line
-        with tcpip4_socket(self.host, self.port) as s:
+        with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+            s.connect((self.host, self.port))
             s.sendall(text)
             tagged_text = s.recv(10*len(text))
         return tagged_text
@@ -143,24 +145,24 @@ class HttpNER(NER):
         for s in ('\f', '\n', '\r', '\t', '\v'): #strip whitespaces
             text = text.replace(s, '')
         text += '\n' #ensure end-of-line
-        with http_connection(self.host, self.port) as c:
-            headers = {'Content-type': 'application/x-www-form-urlencoded', 'Accept' : 'text/plain'}
-            if self.classifier:
-                params = urllib.urlencode(
-                    {'input': text, 'outputFormat': self.oformat, 
-                    'preserveSpacing': self.spacing, 
-                    'classifier': self.classifier})
-            else:
-                params = urllib.urlencode(
-                    {'input': text, 'outputFormat': self.oformat, 
-                    'preserveSpacing': self.spacing})
-            try:
-                c.request('POST', self.location, params, headers)
-                response = c.getresponse()
-                tagged_text = response.read()
-            except httplib.HTTPException, e:
-                print "Failed to post HTTP request."
-                raise e
+
+        headers = {'Content-type': 'application/x-www-form-urlencoded', 'Accept' : 'text/plain'}
+        if self.classifier:
+            params = {'input': text, 'outputFormat': self.oformat, 
+                      'preserveSpacing': self.spacing, 'classifier': self.classifier}
+        else:
+            params = {'input': text, 'outputFormat': self.oformat, 
+                      'preserveSpacing': self.spacing}
+
+        try:
+            resp = requests.post('http://%s:%s%s' % (self.host, self.port, self.location),
+                                headers=headers, params=params)
+            code = resp.status_code
+            tagged_text = resp.content
+
+        except Exception as exc:
+            raise
+
         return tagged_text
 
 
