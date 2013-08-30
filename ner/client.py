@@ -14,12 +14,6 @@ from .exceptions import (
     NERError,
 )
 
-from .utils import (
-    # tcpip4_socket,
-    http_connection,
-)
-
-
 #regex patterns for various tagging options for entity parsing
 SLASHTAGS_EPATTERN  = re.compile(r'(.+?)/([A-Z]+)?\s*')
 XML_EPATTERN        = re.compile(r'<wi num=".+?" entity="(.+?)">(.+?)</wi>')
