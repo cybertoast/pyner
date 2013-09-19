@@ -3,8 +3,6 @@
 
 import os
 
-from ner import __version__
-
 try:
     from setuptools import setup
 except ImportError:
@@ -16,7 +14,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as fp:
 
 specs = {
     'name' : 'ner',
-    'version' : __version__,
+    'version' : '0.4',
     'description' : 'Python client for the Stanford Named Entity Recognizer',
     'long_description' : description,
     'url' : 'http://github.com/cybertoast/pyner',
@@ -25,7 +23,7 @@ specs = {
     'keywords' : ['ner', 'stanford named entity recognizer', 'stanford named entity tagger'],
     'license' : 'BSD',
     'packages' : ['ner'],
-    'install_requires': ['requests == 1.2.3'],
+    'install_requires': ['requests'],
     'test_suite' : 'tests.all_tests',
     'classifiers' : (
         'Development Status :: 3 - Alpha',
