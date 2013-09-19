@@ -25,7 +25,7 @@ specs = {
     'keywords' : ['ner', 'stanford named entity recognizer', 'stanford named entity tagger'],
     'license' : 'BSD',
     'packages' : ['ner'],
-    'install_requires': ['requests'],
+    'install_requires': ['requests == 1.2.3'],
     'test_suite' : 'tests.all_tests',
     'classifiers' : (
         'Development Status :: 3 - Alpha',
