@@ -14,7 +14,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as fp:
 
 specs = {
     'name' : 'ner',
-    'version' : '0.4',
+    'version' : '0.5',
     'description' : 'Python client for the Stanford Named Entity Recognizer',
     'long_description' : description,
     'url' : 'http://github.com/cybertoast/pyner',
